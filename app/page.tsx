@@ -1094,6 +1094,14 @@ export default function Home() {
         </div>
 
         <div className="bottom-volume">
+          <button
+            type="button"
+            className="fullscreen-button mobile-fullscreen-button"
+            onClick={toggleFullscreen}
+            aria-label="Open fullscreen player"
+          >
+            ⛶
+          </button>
           <span>🔊</span>
           <input
             type="range"
