@@ -18,27 +18,195 @@ type Playlist = {
   songIds: string[];
 };
 
-const makePath = (folder: "audio" | "covers", filename: string) => {
-  const actualFilename =
-    folder === "covers" && filename !== "Save Your Tears.jpg"
-      ? filename.replace(/\.jpg$/i, ".jpeg")
-      : filename;
+type IconName =
+  | "home"
+  | "search"
+  | "library"
+  | "play"
+  | "pause"
+  | "skipBack"
+  | "skipForward"
+  | "shuffle"
+  | "repeat"
+  | "heart"
+  | "volume"
+  | "maximize"
+  | "chevronDown"
+  | "more"
+  | "arrowLeft";
 
-  return `/${folder}/${encodeURIComponent(actualFilename)}`;
-};
+function Icon({
+  name,
+  size = 20,
+  fill = "none",
+}: {
+  name: IconName;
+  size?: number;
+  fill?: string;
+}) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 2,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    "aria-hidden": true,
+  };
 
-const temporaryPlaylistCover = makePath("covers", "Tensionado.jpeg");
+  switch (name) {
+    case "home":
+      return (
+        <svg {...common}>
+          <path d="m3 10 9-7 9 7" />
+          <path d="M5 9v11h14V9" />
+          <path d="M9 20v-6h6v6" />
+        </svg>
+      );
 
-const handleCoverError = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    case "search":
+      return (
+        <svg {...common}>
+          <circle cx="11" cy="11" r="7" />
+          <path d="m20 20-4-4" />
+        </svg>
+      );
+
+    case "library":
+      return (
+        <svg {...common}>
+          <path d="M4 5h16" />
+          <path d="M4 9h16" />
+          <path d="M4 13h10" />
+          <path d="M4 17h10" />
+          <path d="M18 14v6" />
+          <path d="M15 17h6" />
+        </svg>
+      );
+
+    case "play":
+      return (
+        <svg {...common} fill={fill}>
+          <path d="m8 5 11 7-11 7V5Z" />
+        </svg>
+      );
+
+    case "pause":
+      return (
+        <svg {...common} fill={fill}>
+          <path d="M7 5v14" />
+          <path d="M17 5v14" />
+        </svg>
+      );
+
+    case "skipBack":
+      return (
+        <svg {...common} fill={fill}>
+          <path d="M6 5v14" />
+          <path d="m18 5-9 7 9 7V5Z" />
+        </svg>
+      );
+
+    case "skipForward":
+      return (
+        <svg {...common} fill={fill}>
+          <path d="M18 5v14" />
+          <path d="m6 5 9 7-9 7V5Z" />
+        </svg>
+      );
+
+    case "shuffle":
+      return (
+        <svg {...common}>
+          <path d="M3 7h3c4 0 5 10 9 10h6" />
+          <path d="m18 14 3 3-3 3" />
+          <path d="M3 17h3c1.2 0 2.1-.7 2.9-1.6" />
+          <path d="M15 7h3l3 3" />
+          <path d="m18 4 3 3-3 3" />
+        </svg>
+      );
+
+    case "repeat":
+      return (
+        <svg {...common}>
+          <path d="m17 2 4 4-4 4" />
+          <path d="M3 11V9a3 3 0 0 1 3-3h15" />
+          <path d="m7 22-4-4 4-4" />
+          <path d="M21 13v2a3 3 0 0 1-3 3H3" />
+        </svg>
+      );
+
+    case "heart":
+      return (
+        <svg {...common} fill={fill}>
+          <path d="M20.8 8.6c0 5.5-8.8 10.4-8.8 10.4S3.2 14.1 3.2 8.6A4.6 4.6 0 0 1 12 6.3a4.6 4.6 0 0 1 8.8 2.3Z" />
+        </svg>
+      );
+
+    case "volume":
+      return (
+        <svg {...common}>
+          <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+          <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+          <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+        </svg>
+      );
+
+    case "maximize":
+      return (
+        <svg {...common}>
+          <path d="M8 3H3v5" />
+          <path d="M3 3l6 6" />
+          <path d="M16 3h5v5" />
+          <path d="m21 3-6 6" />
+          <path d="M8 21H3v-5" />
+          <path d="m3 21 6-6" />
+          <path d="M16 21h5v-5" />
+          <path d="m21 21-6-6" />
+        </svg>
+      );
+
+    case "chevronDown":
+      return (
+        <svg {...common}>
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      );
+
+    case "more":
+      return (
+        <svg {...common}>
+          <circle cx="5" cy="12" r="1" fill="currentColor" />
+          <circle cx="12" cy="12" r="1" fill="currentColor" />
+          <circle cx="19" cy="12" r="1" fill="currentColor" />
+        </svg>
+      );
+
+    case "arrowLeft":
+      return (
+        <svg {...common}>
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+      );
+  }
+}
+
+const makePath = (folder: "audio" | "covers", filename: string) =>
+  `/${folder}/${encodeURIComponent(filename)}`;
+
+const temporaryPlaylistCover = makePath("covers", "Tensionado.jpg");
+
+const handleCoverError = (
+  event: React.SyntheticEvent<HTMLImageElement>,
+) => {
   const image = event.currentTarget;
 
-  if (image.dataset.jpegFallback !== "true") {
-    image.dataset.jpegFallback = "true";
-    image.src = image.src.replace(/\.jpg(?:\?.*)?$/i, ".jpeg");
-    return;
+  if (image.dataset.fallback !== "true") {
+    image.dataset.fallback = "true";
+    image.src = temporaryPlaylistCover;
   }
-
-  image.src = temporaryPlaylistCover;
 };
 
 const songs: Song[] = [
@@ -65,7 +233,7 @@ const songs: Song[] = [
     title: "Totoong Tayo",
     artist: "Jin DC",
     audio: makePath("audio", "Totoong Tayo.mp3"),
-    cover: makePath("covers", "Tototong Tayo.jpeg"),
+    cover: makePath("covers", "Totoong Tayo.jpg"),
     duration: "3:28",
     album: "Totoong Tayo",
   },
@@ -315,10 +483,12 @@ const playlists: Playlist[] = [
 
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds)) return "0:00";
+
   const minutes = Math.floor(seconds / 60);
   const remaining = Math.floor(seconds % 60)
     .toString()
     .padStart(2, "0");
+
   return `${minutes}:${remaining}`;
 };
 
@@ -332,6 +502,7 @@ const formatPlaylistDuration = (playlistSongs: Song[]) => {
     (total, song) => total + durationToSeconds(song.duration),
     0,
   );
+
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
 
@@ -356,6 +527,7 @@ export default function Home() {
   const [showAllPlaylists, setShowAllPlaylists] = useState(false);
   const [showAllRecent, setShowAllRecent] = useState(false);
   const [activeTab, setActiveTab] = useState("Home");
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
 
   const currentSong =
     songs.find((song) => song.id === currentSongId) ?? songs[0];
@@ -399,6 +571,7 @@ export default function Home() {
 
   const ensureAudioSource = () => {
     const audio = audioRef.current;
+
     if (!audio) return null;
 
     if (!audio.src || !audio.src.endsWith(currentSong.audio)) {
@@ -411,6 +584,7 @@ export default function Home() {
 
   const togglePlay = async () => {
     const audio = ensureAudioSource();
+
     if (!audio) return;
 
     if (isPlaying) {
@@ -429,6 +603,7 @@ export default function Home() {
   const playSong = async (song: Song) => {
     setCurrentSongId(song.id);
     setCurrentTime(0);
+
     setRecentlyPlayedIds((previous) => [
       song.id,
       ...previous.filter((id) => id !== song.id),
@@ -455,13 +630,18 @@ export default function Home() {
 
   const nextSong = async () => {
     const list = getCurrentList();
-    if (list.length === 0) return;
-    const currentIndex = list.findIndex((song) => song.id === currentSongId);
 
-    let nextIndex;
+    if (list.length === 0) return;
+
+    const currentIndex = list.findIndex(
+      (song) => song.id === currentSongId,
+    );
+
+    let nextIndex: number;
 
     if (isShuffle) {
       nextIndex = Math.floor(Math.random() * list.length);
+
       if (list.length > 1 && nextIndex === currentIndex) {
         nextIndex = (nextIndex + 1) % list.length;
       }
@@ -474,13 +654,22 @@ export default function Home() {
     }
 
     const next = list[nextIndex];
+
     if (next) await playSong(next);
   };
 
   const previousSong = async () => {
     const list = getCurrentList();
-    const currentIndex = list.findIndex((song) => song.id === currentSongId);
-    const previousIndex = currentIndex <= 0 ? list.length - 1 : currentIndex - 1;
+
+    if (list.length === 0) return;
+
+    const currentIndex = list.findIndex(
+      (song) => song.id === currentSongId,
+    );
+
+    const previousIndex =
+      currentIndex <= 0 ? list.length - 1 : currentIndex - 1;
+
     const previous = list[previousIndex];
 
     if (previous) await playSong(previous);
@@ -499,34 +688,26 @@ export default function Home() {
     setActiveTab(playlist.name);
   };
 
-  const toggleFullscreen = async () => {
-    if (document.fullscreenElement) {
-      await document.exitFullscreen();
-      return;
-    }
-
-    const panel = nowPlayingPanelRef.current;
-    if (panel && getComputedStyle(panel).display !== "none") {
-      await panel.requestFullscreen();
-    } else {
-      await document.documentElement.requestFullscreen();
-    }
+  const toggleFullscreen = () => {
+    setIsFullscreenOpen((open) => !open);
   };
 
   useEffect(() => {
     const audio = audioRef.current;
+
     if (!audio) return;
 
     audio.volume = volume;
 
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration || 0);
+
     const ended = () => {
       if (repeat) {
         audio.currentTime = 0;
-        audio.play();
+        void audio.play();
       } else {
-        nextSong();
+        void nextSong();
       }
     };
 
@@ -547,7 +728,21 @@ export default function Home() {
     }
   }, [volume]);
 
-  const displayDuration = duration || Number(currentSong.duration.split(":")[0]) * 60;
+  const displayDuration =
+    duration || durationToSeconds(currentSong.duration);
+
+  const progressValue = Math.min(
+    currentTime,
+    displayDuration || 1,
+  );
+
+  const seekTo = (value: number) => {
+    setCurrentTime(value);
+
+    if (audioRef.current) {
+      audioRef.current.currentTime = value;
+    }
+  };
 
   return (
     <main className="music-app">
@@ -567,32 +762,39 @@ export default function Home() {
 
         <nav className="main-nav">
           <button
-            className={activeTab === "Home" ? "nav-button active" : "nav-button"}
+            className={
+              activeTab === "Home" ? "nav-button active" : "nav-button"
+            }
             onClick={() => {
               setActiveTab("Home");
               setActivePlaylistId(null);
+              setSearch("");
             }}
           >
-            <span>⌂</span>
-            Home
-          </button>
-
-          <button
-            className={activeTab === "Search" ? "nav-button active" : "nav-button"}
-            onClick={() => setActiveTab("Search")}
-          >
-            <span>⌕</span>
-            Search
+            <Icon name="home" size={20} />
+            <span>Home</span>
           </button>
 
           <button
             className={
-              activeTab === "Your Library" ? "nav-button active" : "nav-button"
+              activeTab === "Search" ? "nav-button active" : "nav-button"
+            }
+            onClick={() => setActiveTab("Search")}
+          >
+            <Icon name="search" size={20} />
+            <span>Search</span>
+          </button>
+
+          <button
+            className={
+              activeTab === "Your Library"
+                ? "nav-button active"
+                : "nav-button"
             }
             onClick={() => setActiveTab("Your Library")}
           >
-            <span>▥</span>
-            Your Library
+            <Icon name="library" size={20} />
+            <span>Your Library</span>
           </button>
         </nav>
 
@@ -619,9 +821,7 @@ export default function Home() {
                 <img
                   src={firstSong?.cover}
                   alt=""
-                  onError={(event) => {
-                    event.currentTarget.style.display = "none";
-                  }}
+                  onError={handleCoverError}
                 />
                 <span>{playlist.name}</span>
               </button>
@@ -633,7 +833,9 @@ export default function Home() {
       <section className="main-area">
         <header className="topbar">
           <div className="sonic-wordmark" aria-label="Sonic">
-            <span className="sonic-mark" aria-hidden="true">S</span>
+            <span className="sonic-mark" aria-hidden="true">
+              S
+            </span>
             <span>Sonic</span>
           </div>
 
@@ -647,13 +849,14 @@ export default function Home() {
                   setSearch("");
                 }}
               >
-                ←
+                <Icon name="arrowLeft" size={21} />
               </button>
             </div>
           )}
 
           <div className="search-wrapper">
-            <span>⌕</span>
+            <Icon name="search" size={19} />
+
             <input
               value={search}
               onChange={(event) => {
@@ -666,70 +869,144 @@ export default function Home() {
           </div>
 
           <div className="topbar-actions">
-            <button aria-label="Notifications">♧</button>
+            <button aria-label="Notifications">
+              <Icon name="more" size={20} />
+            </button>
+
             <button aria-label="Profile" className="profile-button">
               G
             </button>
           </div>
         </header>
 
-        <div className={activePlaylist ? "page-content playlist-page-content" : "page-content"}>
-          {!activePlaylist && <section className="hero-banner">
-            <div className="hero-phone" aria-label="Sonic player preview">
-              <div className="phone-speaker" />
-              <div className="phone-screen">
-                <div className="phone-status">
-                  <span className="phone-logo" aria-label="Sonic logo">S</span>
-                  <span>♫</span>
-                </div>
-                <img
-                  src={currentSong.cover}
-                  alt={currentSong.title}
-                  onError={handleCoverError}
-                />
-                <div className="phone-song-info">
-                  <strong>{currentSong.title}</strong>
-                  <small>{currentSong.artist}</small>
-                </div>
-                <div className="phone-progress">
-                  <span style={{ width: `${Math.min((currentTime / (displayDuration || 1)) * 100, 100)}%` }} />
-                </div>
-                <div className="phone-controls">
-                  <button onClick={previousSong} aria-label="Previous song">◀</button>
-                  <button className="phone-play" onClick={togglePlay} aria-label="Play or pause">
-                    {isPlaying ? "Ⅱ" : "▶"}
-                  </button>
-                  <button onClick={nextSong} aria-label="Next song">▶</button>
+        <div
+          className={
+            activePlaylist
+              ? "page-content playlist-page-content"
+              : "page-content"
+          }
+        >
+          {!activePlaylist && (
+            <section className="hero-banner">
+              <div
+                className="hero-phone"
+                aria-label="Sonic player preview"
+              >
+                <div className="phone-speaker" />
+
+                <div className="phone-screen">
+                  <div className="phone-status">
+                    <span className="phone-logo" aria-label="Sonic logo">
+                      S
+                    </span>
+
+                    <span>
+                      <Icon name="volume" size={13} />
+                    </span>
+                  </div>
+
+                  <img
+                    src={currentSong.cover}
+                    alt={currentSong.title}
+                    onError={handleCoverError}
+                  />
+
+                  <div className="phone-song-info">
+                    <strong>{currentSong.title}</strong>
+                    <small>{currentSong.artist}</small>
+                  </div>
+
+                  <div className="phone-progress">
+                    <span
+                      style={{
+                        width: `${Math.min(
+                          (currentTime / (displayDuration || 1)) * 100,
+                          100,
+                        )}%`,
+                      }}
+                    />
+                  </div>
+
+                  <div className="phone-controls">
+                    <button
+                      onClick={() => void previousSong()}
+                      aria-label="Previous song"
+                    >
+                      <Icon
+                        name="skipBack"
+                        size={14}
+                        fill="currentColor"
+                      />
+                    </button>
+
+                    <button
+                      className="phone-play"
+                      onClick={() => void togglePlay()}
+                      aria-label="Play or pause"
+                    >
+                      <Icon
+                        name={isPlaying ? "pause" : "play"}
+                        size={17}
+                        fill="currentColor"
+                      />
+                    </button>
+
+                    <button
+                      onClick={() => void nextSong()}
+                      aria-label="Next song"
+                    >
+                      <Icon
+                        name="skipForward"
+                        size={14}
+                        fill="currentColor"
+                      />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="hero-copy">
-              <h1>Let the music<br />take you somewhere</h1>
-              <p>Your personal soundtrack, always.</p>
+              <div className="hero-copy">
+                <h1>
+                  Let the music
+                  <br />
+                  take you somewhere
+                </h1>
 
-              <button
-                className="green-button"
-                onClick={() => playSong(currentSong)}
-              >
-                <span>▶</span>
-                Play something
-              </button>
-            </div>
-          </section>}
+                <p>Your personal soundtrack, always.</p>
+
+                <button
+                  className="green-button"
+                  onClick={() => void playSong(currentSong)}
+                >
+                  <Icon name="play" size={17} fill="currentColor" />
+                  <span>Play something</span>
+                </button>
+              </div>
+            </section>
+          )}
 
           {activePlaylist ? (
             <section className="playlist-header">
               <img
-                src={songs.find((song) => song.id === activePlaylist.songIds[0])?.cover}
+                src={
+                  songs.find(
+                    (song) => song.id === activePlaylist.songIds[0],
+                  )?.cover
+                }
                 alt={activePlaylist.name}
+                onError={handleCoverError}
               />
+
               <div>
-                <span className="playlist-type">Gwen's Playlist</span>
+                <span className="playlist-type">Gwen&apos;s Playlist</span>
+
                 <h1>{activePlaylist.name}</h1>
+
                 <p className="playlist-meta">
-                  <strong>Sonic</strong><span>•</span>
-                  <span>{playlistSongs.length} songs</span><span>•</span>
+                  <strong>Sonic</strong>
+                  <span>•</span>
+                  <span>{playlistSongs.length} songs</span>
+                  <span>•</span>
                   <span>{formatPlaylistDuration(playlistSongs)}</span>
                 </p>
               </div>
@@ -740,127 +1017,183 @@ export default function Home() {
             <div className="playlist-actions">
               <button
                 className="playlist-play"
-                onClick={() => playlistSongs[0] && playSong(playlistSongs[0])}
+                onClick={() =>
+                  playlistSongs[0] && void playSong(playlistSongs[0])
+                }
                 aria-label="Play playlist"
               >
-                ▶
+                <Icon name="play" size={23} fill="currentColor" />
               </button>
+
               <button
-                className={isShuffle ? "playlist-action active" : "playlist-action"}
+                className={
+                  isShuffle
+                    ? "playlist-action active"
+                    : "playlist-action"
+                }
                 onClick={() => setIsShuffle(!isShuffle)}
                 aria-label="Shuffle playlist"
               >
-                ⤨
+                <Icon name="shuffle" size={22} />
               </button>
-              <button className="playlist-action" aria-label="Favorite playlist">
-                ♡
+
+              <button
+                className="playlist-action"
+                aria-label="Favorite playlist"
+              >
+                <Icon name="heart" size={22} />
               </button>
-              <button className="playlist-action" aria-label="More playlist options">
-                ···
+
+              <button
+                className="playlist-action"
+                aria-label="More playlist options"
+              >
+                <Icon name="more" size={22} />
               </button>
             </div>
           ) : null}
 
-          {!activePlaylist && <section className="content-section">
-            <div className="section-title">
-              <h2>{activePlaylist ? "Playlist songs" : "Made for you"}</h2>
-              <button onClick={() => setShowAllPlaylists(!showAllPlaylists)}>
-                {showAllPlaylists ? "Show less" : "Show all ›"}
-              </button>
-            </div>
+          {!activePlaylist && (
+            <section className="content-section">
+              <div className="section-title">
+                <h2>Made for you</h2>
 
-            <div className={showAllPlaylists ? "playlist-cards show-all" : "playlist-cards"}>
-              {(activePlaylist ? [activePlaylist] : playlists).map((playlist) => {
-                const firstSong = songs.find(
-                  (song) => song.id === playlist.songIds[0],
-                );
+                <button
+                  onClick={() =>
+                    setShowAllPlaylists(!showAllPlaylists)
+                  }
+                >
+                  {showAllPlaylists ? "Show less" : "Show all ›"}
+                </button>
+              </div>
 
-                return (
+              <div
+                className={
+                  showAllPlaylists
+                    ? "playlist-cards show-all"
+                    : "playlist-cards"
+                }
+              >
+                {playlists.map((playlist) => (
                   <article
-  className="playlist-card"
-  key={playlist.id}
-  onClick={() => selectPlaylist(playlist)}
->
-  <div className="card-cover">
-    <div className="playlist-collage">
-      {playlist.songIds.slice(0, 4).map((songId) => {
-        const song = songs.find((item) => item.id === songId);
+                    className="playlist-card"
+                    key={playlist.id}
+                    onClick={() => selectPlaylist(playlist)}
+                  >
+                    <div className="card-cover">
+                      <div className="playlist-collage">
+                        {playlist.songIds.slice(0, 4).map((songId) => {
+                          const song = songs.find(
+                            (item) => item.id === songId,
+                          );
 
-        return (
-          <img
-            key={songId}
-            src={song?.cover}
-            alt=""
-            onError={(event) => {
-              event.currentTarget.style.display = "none";
-            }}
-          />
-        );
-      })}
-    </div>
+                          return (
+                            <img
+                              key={songId}
+                              src={song?.cover}
+                              alt=""
+                              onError={handleCoverError}
+                            />
+                          );
+                        })}
+                      </div>
 
-    <button
-      className="card-play"
-      onClick={(event) => {
-        event.stopPropagation();
+                      <button
+                        className="card-play"
+                        onClick={(event) => {
+                          event.stopPropagation();
 
-        const firstSong = songs.find(
-          (song) => song.id === playlist.songIds[0],
-        );
+                          const firstSong = songs.find(
+                            (song) =>
+                              song.id === playlist.songIds[0],
+                          );
 
-        if (firstSong) playSong(firstSong);
-      }}
-    >
-      ▶
-    </button>
-  </div>
+                          if (firstSong) void playSong(firstSong);
+                        }}
+                        aria-label={`Play ${playlist.name}`}
+                      >
+                        <Icon
+                          name="play"
+                          size={21}
+                          fill="currentColor"
+                        />
+                      </button>
+                    </div>
 
-  <h3>{playlist.name}</h3>
-  <p>Playlist • Gwen</p>
-</article>
-                );
-              })}
-            </div>
-          </section>}
+                    <h3>{playlist.name}</h3>
+                    <p>Playlist • Gwen</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+          )}
 
           {!activePlaylist && (
             <section className="content-section">
               <div className="section-title">
                 <h2>Recently played</h2>
-                <button onClick={() => setShowAllRecent(!showAllRecent)}>
+
+                <button
+                  onClick={() => setShowAllRecent(!showAllRecent)}
+                >
                   {showAllRecent ? "Show less" : "Show all ›"}
                 </button>
               </div>
 
               <div className="recent-grid">
-                {recentlyPlayedSongs.slice(0, showAllRecent ? recentlyPlayedSongs.length : 4).map((song) => {
-                  return (
+                {recentlyPlayedSongs
+                  .slice(
+                    0,
+                    showAllRecent ? recentlyPlayedSongs.length : 4,
+                  )
+                  .map((song) => (
                     <button
                       className="recent-card"
                       key={song.id}
-                      onClick={() => playSong(song)}
+                      onClick={() => void playSong(song)}
                     >
-                      <img src={song.cover} alt={song.title} onError={handleCoverError} />
+                      <img
+                        src={song.cover}
+                        alt={song.title}
+                        onError={handleCoverError}
+                      />
+
                       <span>
                         <strong>{song.title}</strong>
                         <small>{song.artist}</small>
                       </span>
                     </button>
-                  );
-                })}
+                  ))}
               </div>
             </section>
           )}
 
           <section className="content-section">
             <div className="section-title">
-              <h2>{activePlaylist ? "Songs" : search.trim() ? "Search results" : "Your top songs"}</h2>
-              {!activePlaylist && !search.trim() && favoriteSongs.length === 0 ? (
-                <span className="section-note">Favorite songs will appear here.</span>
+              <h2>
+                {activePlaylist
+                  ? "Songs"
+                  : search.trim()
+                    ? "Search results"
+                    : "Your top songs"}
+              </h2>
+
+              {!activePlaylist &&
+              !search.trim() &&
+              favoriteSongs.length === 0 ? (
+                <span className="section-note">
+                  Favorite songs will appear here.
+                </span>
               ) : null}
             </div>
 
-            <div className={activePlaylist ? "song-list playlist-song-list" : "song-list"}>
+            <div
+              className={
+                activePlaylist
+                  ? "song-list playlist-song-list"
+                  : "song-list"
+              }
+            >
               <div className="song-list-heading">
                 <span>#</span>
                 <span>Title</span>
@@ -869,74 +1202,97 @@ export default function Home() {
                 <span />
               </div>
 
-              {displayedSongs.map(
-                (song, index) => (
-                  <div
-                    className={
-                      currentSongId === song.id
-                        ? "song-row selected"
-                        : "song-row"
+              {displayedSongs.map((song, index) => (
+                <div
+                  className={
+                    currentSongId === song.id
+                      ? "song-row selected"
+                      : "song-row"
+                  }
+                  key={song.id}
+                  onClick={() => void playSong(song)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      void playSong(song);
                     }
-                    key={song.id}
-                    onClick={() => playSong(song)}
-                    role="button"
-                    tabIndex={0}
+                  }}
+                >
+                  <span className="song-number">
+                    {currentSongId === song.id && isPlaying ? (
+                      <Icon name="volume" size={16} />
+                    ) : (
+                      index + 1
+                    )}
+                  </span>
+
+                  <button
+                    className="song-main"
+                    tabIndex={-1}
+                    onClick={(event) => event.stopPropagation()}
                   >
-                    <span className="song-number">
-                      {currentSongId === song.id && isPlaying ? "♫" : index + 1}
+                    <img
+                      src={song.cover}
+                      alt={song.title}
+                      onError={handleCoverError}
+                    />
+
+                    <span>
+                      <strong>{song.title}</strong>
                     </span>
+                  </button>
 
-                    <button
-                      className="song-main"
-                      tabIndex={-1}
-                    >
-                      <img
-                        src={song.cover}
-                        alt={song.title}
-                        onError={(event) => {
-                          event.currentTarget.src = temporaryPlaylistCover;
-                        }}
-                      />
-                      <span>
-                        <strong>{song.title}</strong>
-                      </span>
-                    </button>
+                  <span className="song-album">{song.artist}</span>
+                  <span className="song-duration">{song.duration}</span>
 
-                    <span className="song-album">{song.artist}</span>
-                    <span className="song-duration">{song.duration}</span>
-
-                    <button
-                      className={
+                  <button
+                    className={
+                      liked.includes(song.id)
+                        ? "heart-button liked"
+                        : "heart-button"
+                    }
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      toggleLike(song.id);
+                    }}
+                    aria-label="Like song"
+                  >
+                    <Icon
+                      name="heart"
+                      size={18}
+                      fill={
                         liked.includes(song.id)
-                          ? "heart-button liked"
-                          : "heart-button"
+                          ? "currentColor"
+                          : "none"
                       }
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        toggleLike(song.id);
-                      }}
-                      aria-label="Like song"
-                    >
-                      {liked.includes(song.id) ? "♥" : "♡"}
-                    </button>
-                  </div>
-                ),
-              )}
+                    />
+                  </button>
+                </div>
+              ))}
             </div>
           </section>
         </div>
       </section>
 
-      <aside className="now-playing-panel" ref={nowPlayingPanelRef}>
+      <aside
+        className="now-playing-panel"
+        ref={nowPlayingPanelRef}
+      >
         <div className="now-playing-title">
-          <span>▮▮</span>
+          <span>
+            <Icon name="volume" size={16} />
+          </span>
+
           <strong>Now playing</strong>
+
           <button
             className="fullscreen-button"
             onClick={toggleFullscreen}
-            aria-label="Toggle fullscreen player"
+            aria-label="Open fullscreen player"
           >
-            ⛶
+            <Icon name="maximize" size={18} />
           </button>
         </div>
 
@@ -944,9 +1300,7 @@ export default function Home() {
           className="now-playing-cover"
           src={currentSong.cover}
           alt={currentSong.title}
-          onError={(event) => {
-            event.currentTarget.src = temporaryPlaylistCover;
-          }}
+          onError={handleCoverError}
         />
 
         <div className="now-playing-info">
@@ -956,11 +1310,21 @@ export default function Home() {
           </div>
 
           <button
-            className={liked.includes(currentSong.id) ? "liked" : ""}
+            className={
+              liked.includes(currentSong.id) ? "liked" : ""
+            }
             onClick={() => toggleLike(currentSong.id)}
             aria-label="Like current song"
           >
-            {liked.includes(currentSong.id) ? "♥" : "♡"}
+            <Icon
+              name="heart"
+              size={23}
+              fill={
+                liked.includes(currentSong.id)
+                  ? "currentColor"
+                  : "none"
+              }
+            />
           </button>
         </div>
 
@@ -969,16 +1333,11 @@ export default function Home() {
             type="range"
             min="0"
             max={displayDuration || 1}
-            value={Math.min(currentTime, displayDuration || 1)}
-            onChange={(event) => {
-              const nextTime = Number(event.target.value);
-              setCurrentTime(nextTime);
-
-              if (audioRef.current) {
-                audioRef.current.currentTime = nextTime;
-              }
-            }}
+            value={progressValue}
+            onChange={(event) => seekTo(Number(event.target.value))}
+            aria-label="Song progress"
           />
+
           <div>
             <span>{formatTime(currentTime)}</span>
             <span>{currentSong.duration}</span>
@@ -992,19 +1351,44 @@ export default function Home() {
             onClick={() => setIsShuffle(!isShuffle)}
             aria-label="Shuffle"
           >
-            ⤨
+            <Icon name="shuffle" size={19} />
           </button>
 
-          <button type="button" onClick={previousSong} aria-label="Previous song">
-            ◀
+          <button
+            type="button"
+            onClick={() => void previousSong()}
+            aria-label="Previous song"
+          >
+            <Icon
+              name="skipBack"
+              size={22}
+              fill="currentColor"
+            />
           </button>
 
-          <button type="button" className="big-play" onClick={togglePlay} aria-label="Play">
-            {isPlaying ? "Ⅱ" : "▶"}
+          <button
+            type="button"
+            className="big-play"
+            onClick={() => void togglePlay()}
+            aria-label="Play or pause"
+          >
+            <Icon
+              name={isPlaying ? "pause" : "play"}
+              size={25}
+              fill="currentColor"
+            />
           </button>
 
-          <button type="button" onClick={nextSong} aria-label="Next song">
-            ▶
+          <button
+            type="button"
+            onClick={() => void nextSong()}
+            aria-label="Next song"
+          >
+            <Icon
+              name="skipForward"
+              size={22}
+              fill="currentColor"
+            />
           </button>
 
           <button
@@ -1013,7 +1397,7 @@ export default function Home() {
             onClick={() => setRepeat(!repeat)}
             aria-label="Repeat"
           >
-            ↻
+            <Icon name="repeat" size={19} />
           </button>
         </div>
 
@@ -1030,65 +1414,275 @@ export default function Home() {
             .map((song, index) => (
               <button
                 className={
-                  currentSongId === song.id ? "queue-item active" : "queue-item"
+                  currentSongId === song.id
+                    ? "queue-item active"
+                    : "queue-item"
                 }
                 key={song.id}
-                onClick={() => playSong(song)}
+                onClick={() => void playSong(song)}
               >
                 <span>{index + 1}</span>
-                <img src={song.cover} alt="" />
+
+                <img
+                  src={song.cover}
+                  alt=""
+                  onError={handleCoverError}
+                />
+
                 <span className="queue-text">
                   <strong>{song.title}</strong>
                   <small>{song.artist}</small>
                 </span>
+
                 <small>{song.duration}</small>
               </button>
             ))}
         </div>
       </aside>
 
+      {isFullscreenOpen && (
+        <section
+          className="fullscreen-player"
+          aria-label="Now playing fullscreen"
+        >
+          <div className="fullscreen-player-header">
+            <button
+              type="button"
+              className="fullscreen-close"
+              onClick={() => setIsFullscreenOpen(false)}
+              aria-label="Close fullscreen player"
+            >
+              <Icon name="chevronDown" size={27} />
+            </button>
+
+            <strong>NOW PLAYING</strong>
+
+            <span className="fullscreen-header-spacer" />
+          </div>
+
+          <div className="fullscreen-player-content">
+            <img
+              className="fullscreen-cover"
+              src={currentSong.cover}
+              alt={currentSong.title}
+              onError={handleCoverError}
+            />
+
+            <div className="fullscreen-song-info">
+              <div>
+                <h1>{currentSong.title}</h1>
+                <p>{currentSong.artist}</p>
+              </div>
+
+              <button
+                type="button"
+                className={
+                  liked.includes(currentSong.id) ? "liked" : ""
+                }
+                onClick={() => toggleLike(currentSong.id)}
+                aria-label="Like current song"
+              >
+                <Icon
+                  name="heart"
+                  size={25}
+                  fill={
+                    liked.includes(currentSong.id)
+                      ? "currentColor"
+                      : "none"
+                  }
+                />
+              </button>
+            </div>
+
+            <div className="fullscreen-progress">
+              <input
+                type="range"
+                min="0"
+                max={displayDuration || 1}
+                value={progressValue}
+                onChange={(event) =>
+                  seekTo(Number(event.target.value))
+                }
+                aria-label="Song progress"
+              />
+
+              <div>
+                <span>{formatTime(currentTime)}</span>
+                <span>{currentSong.duration}</span>
+              </div>
+            </div>
+
+            <div className="fullscreen-controls">
+              <button
+                type="button"
+                className={isShuffle ? "active" : ""}
+                onClick={() => setIsShuffle(!isShuffle)}
+                aria-label="Shuffle"
+              >
+                <Icon name="shuffle" size={21} />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => void previousSong()}
+                aria-label="Previous song"
+              >
+                <Icon
+                  name="skipBack"
+                  size={30}
+                  fill="currentColor"
+                />
+              </button>
+
+              <button
+                type="button"
+                className="fullscreen-play"
+                onClick={() => void togglePlay()}
+                aria-label="Play or pause"
+              >
+                <Icon
+                  name={isPlaying ? "pause" : "play"}
+                  size={30}
+                  fill="currentColor"
+                />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => void nextSong()}
+                aria-label="Next song"
+              >
+                <Icon
+                  name="skipForward"
+                  size={30}
+                  fill="currentColor"
+                />
+              </button>
+
+              <button
+                type="button"
+                className={repeat ? "active" : ""}
+                onClick={() => setRepeat(!repeat)}
+                aria-label="Repeat"
+              >
+                <Icon name="repeat" size={21} />
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
       <footer className="bottom-player">
-        <div className="bottom-song">
-          <img src={currentSong.cover} alt={currentSong.title} />
-          <span>
+        <button
+          type="button"
+          className="bottom-song"
+          onClick={toggleFullscreen}
+          aria-label="Open now playing"
+        >
+          <img
+            src={currentSong.cover}
+            alt={currentSong.title}
+            onError={handleCoverError}
+          />
+
+          <span className="bottom-song-details">
             <strong>{currentSong.title}</strong>
             <small>{currentSong.artist}</small>
           </span>
-          <button
-            className={liked.includes(currentSong.id) ? "liked" : ""}
-            onClick={() => toggleLike(currentSong.id)}
+
+          <span
+            className="bottom-song-like"
+            onClick={(event) => {
+              event.stopPropagation();
+              toggleLike(currentSong.id);
+            }}
+            role="button"
+            aria-label="Like song"
           >
-            {liked.includes(currentSong.id) ? "♥" : "♡"}
-          </button>
-        </div>
+            <Icon
+              name="heart"
+              size={18}
+              fill={
+                liked.includes(currentSong.id)
+                  ? "currentColor"
+                  : "none"
+              }
+            />
+          </span>
+        </button>
 
         <div className="bottom-center">
           <div className="bottom-controls">
-            <button type="button" onClick={() => setIsShuffle(!isShuffle)} aria-label="Shuffle">⤨</button>
-            <button type="button" onClick={previousSong} aria-label="Previous song">◀</button>
-            <button type="button" className="bottom-play" onClick={togglePlay} aria-label="Play">
-              {isPlaying ? "Ⅱ" : "▶"}
+            <button
+              type="button"
+              onClick={() => setIsShuffle(!isShuffle)}
+              aria-label="Shuffle"
+              className={isShuffle ? "control-active" : ""}
+            >
+              <Icon name="shuffle" size={16} />
             </button>
-            <button type="button" onClick={nextSong} aria-label="Next song">▶</button>
-            <button type="button" onClick={() => setRepeat(!repeat)} aria-label="Repeat">↻</button>
+
+            <button
+              type="button"
+              onClick={() => void previousSong()}
+              aria-label="Previous song"
+            >
+              <Icon
+                name="skipBack"
+                size={19}
+                fill="currentColor"
+              />
+            </button>
+
+            <button
+              type="button"
+              className="bottom-play"
+              onClick={() => void togglePlay()}
+              aria-label={isPlaying ? "Pause" : "Play"}
+            >
+              <Icon
+                name={isPlaying ? "pause" : "play"}
+                size={21}
+                fill="currentColor"
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => void nextSong()}
+              aria-label="Next song"
+            >
+              <Icon
+                name="skipForward"
+                size={19}
+                fill="currentColor"
+              />
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setRepeat(!repeat)}
+              aria-label="Repeat"
+              className={repeat ? "control-active" : ""}
+            >
+              <Icon name="repeat" size={16} />
+            </button>
           </div>
 
           <div className="bottom-progress">
             <span>{formatTime(currentTime)}</span>
+
             <input
               type="range"
               min="0"
               max={displayDuration || 1}
-              value={Math.min(currentTime, displayDuration || 1)}
-              onChange={(event) => {
-                const nextTime = Number(event.target.value);
-                setCurrentTime(nextTime);
-
-                if (audioRef.current) {
-                  audioRef.current.currentTime = nextTime;
-                }
-              }}
+              value={progressValue}
+              onChange={(event) =>
+                seekTo(Number(event.target.value))
+              }
+              aria-label="Song progress"
             />
+
             <span>{currentSong.duration}</span>
           </div>
         </div>
@@ -1096,28 +1690,56 @@ export default function Home() {
         <div className="bottom-volume">
           <button
             type="button"
-            className="fullscreen-button mobile-fullscreen-button"
-            onClick={toggleFullscreen}
-            aria-label="Open fullscreen player"
+            onClick={() => setVolume(volume === 0 ? 0.75 : 0)}
+            aria-label={volume === 0 ? "Unmute" : "Mute"}
           >
-            ⛶
+            <Icon name="volume" size={18} />
           </button>
-          <span>🔊</span>
+
           <input
             type="range"
             min="0"
             max="1"
             step="0.01"
             value={volume}
-            onChange={(event) => setVolume(Number(event.target.value))}
+            onChange={(event) =>
+              setVolume(Number(event.target.value))
+            }
+            aria-label="Volume"
           />
+
+          <button
+            type="button"
+            className="desktop-fullscreen-button"
+            onClick={toggleFullscreen}
+            aria-label="Open fullscreen player"
+          >
+            <Icon name="maximize" size={18} />
+          </button>
         </div>
       </footer>
 
       <nav className="mobile-nav">
-        <button onClick={() => setActiveTab("Home")}>⌂<span>Home</span></button>
-        <button onClick={() => setActiveTab("Search")}>⌕<span>Search</span></button>
-        <button onClick={() => setActiveTab("Your Library")}>▥<span>Library</span></button>
+        <button
+          onClick={() => {
+            setActiveTab("Home");
+            setActivePlaylistId(null);
+            setSearch("");
+          }}
+        >
+          <Icon name="home" size={22} />
+          <span>Home</span>
+        </button>
+
+        <button onClick={() => setActiveTab("Search")}>
+          <Icon name="search" size={22} />
+          <span>Search</span>
+        </button>
+
+        <button onClick={() => setActiveTab("Your Library")}>
+          <Icon name="library" size={22} />
+          <span>Library</span>
+        </button>
       </nav>
     </main>
   );
