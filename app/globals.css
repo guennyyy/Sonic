@@ -2004,6 +2004,13 @@ body {
   .mobile-player-open .large-controls button::after,
   .bottom-controls button::after,
   .phone-controls button::after { margin: 0 !important; }
+
+  /* YouTube Music-style visual rhythm: small transport controls, one clear play action. */
+  .mobile-player-open .large-controls { width: min(100%, 390px) !important; justify-content: space-between !important; gap: 0 !important; padding: 0 34px !important; }
+  .mobile-player-open .large-controls button { width: 48px !important; height: 48px !important; min-width: 48px !important; min-height: 48px !important; }
+  .mobile-player-open .large-controls .big-play { width: 88px !important; height: 88px !important; min-width: 88px !important; min-height: 88px !important; }
+  .mobile-player-open .large-controls .big-play::after { border-top-width: 13px !important; border-bottom-width: 13px !important; border-left-width: 19px !important; }
+  .mobile-player-open .large-controls .big-play.is-playing::after { width: 7px !important; height: 28px !important; box-shadow: 13px 0 0 currentColor !important; }
 }
 
 /* Phone-sized Now Playing view: opened from the compact bottom player. */
