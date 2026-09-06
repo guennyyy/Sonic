@@ -356,6 +356,7 @@ export default function Home() {
   const [showAllPlaylists, setShowAllPlaylists] = useState(false);
   const [showAllRecent, setShowAllRecent] = useState(false);
   const [activeTab, setActiveTab] = useState("Home");
+  const [isMobilePlayerOpen, setIsMobilePlayerOpen] = useState(false);
 
   const currentSong =
     songs.find((song) => song.id === currentSongId) ?? songs[0];
@@ -512,6 +513,24 @@ export default function Home() {
       await document.documentElement.requestFullscreen();
     }
   };
+
+  const openNowPlaying = async () => {
+    if (window.matchMedia("(max-width: 980px)").matches) {
+      setIsMobilePlayerOpen(true);
+      return;
+    }
+
+    await toggleFullscreen();
+  };
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsMobilePlayerOpen(false);
+    };
+
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -927,8 +946,19 @@ export default function Home() {
         </div>
       </section>
 
-      <aside className="now-playing-panel" ref={nowPlayingPanelRef}>
+      <aside
+        className={isMobilePlayerOpen ? "now-playing-panel mobile-player-open" : "now-playing-panel"}
+        ref={nowPlayingPanelRef}
+      >
         <div className="now-playing-title">
+          <button
+            className="mobile-player-close"
+            type="button"
+            onClick={() => setIsMobilePlayerOpen(false)}
+            aria-label="Close now playing"
+          >
+            ←
+          </button>
           <span>▮▮</span>
           <strong>Now playing</strong>
           <button
@@ -999,7 +1029,7 @@ export default function Home() {
             ◀
           </button>
 
-          <button type="button" className="big-play" onClick={togglePlay} aria-label="Play">
+          <button type="button" className={isPlaying ? "big-play is-playing" : "big-play"} onClick={togglePlay} aria-label="Play">
             {isPlaying ? "Ⅱ" : "▶"}
           </button>
 
@@ -1048,7 +1078,18 @@ export default function Home() {
       </aside>
 
       <footer className="bottom-player">
-        <div className="bottom-song">
+        <div
+          className="bottom-song"
+          role="button"
+          tabIndex={0}
+          onClick={(event) => {
+            if (!(event.target as HTMLElement).closest("button")) openNowPlaying();
+          }}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") openNowPlaying();
+          }}
+          aria-label="Open now playing"
+        >
           <img src={currentSong.cover} alt={currentSong.title} />
           <span>
             <strong>{currentSong.title}</strong>
@@ -1066,7 +1107,7 @@ export default function Home() {
           <div className="bottom-controls">
             <button type="button" onClick={() => setIsShuffle(!isShuffle)} aria-label="Shuffle">⤨</button>
             <button type="button" onClick={previousSong} aria-label="Previous song">◀</button>
-            <button type="button" className="bottom-play" onClick={togglePlay} aria-label="Play">
+            <button type="button" className={isPlaying ? "bottom-play is-playing" : "bottom-play"} onClick={togglePlay} aria-label="Play">
               {isPlaying ? "Ⅱ" : "▶"}
             </button>
             <button type="button" onClick={nextSong} aria-label="Next song">▶</button>
@@ -1097,7 +1138,7 @@ export default function Home() {
           <button
             type="button"
             className="fullscreen-button mobile-fullscreen-button"
-            onClick={toggleFullscreen}
+            onClick={openNowPlaying}
             aria-label="Open fullscreen player"
           >
             ⛶

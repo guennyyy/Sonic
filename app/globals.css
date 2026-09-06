@@ -1918,6 +1918,212 @@ body {
   }
 }
 
+/* Phone-sized Now Playing view: opened from the compact bottom player. */
+.mobile-player-close {
+  display: none;
+}
+
+@media (max-width: 980px) {
+  .music-app {
+    padding-bottom: calc(150px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-player {
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    min-height: 82px;
+    padding: 9px 16px;
+  }
+
+  .bottom-song {
+    min-width: 0;
+    cursor: pointer;
+  }
+
+  .bottom-song:focus-visible {
+    outline: 2px solid var(--white);
+    outline-offset: -3px;
+  }
+
+  .now-playing-panel.mobile-player-open {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    display: flex;
+    width: 100%;
+    height: 100dvh;
+    min-height: 100vh;
+    flex-direction: column;
+    padding: max(18px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom));
+    border: 0;
+    background:
+      radial-gradient(circle at 86% 4%, rgba(154, 82, 104, 0.45), transparent 28%),
+      linear-gradient(180deg, #64253c 0%, #3b1021 45%, #210913 100%);
+    overflow-y: auto;
+  }
+
+  .mobile-player-open .now-playing-title {
+    min-height: 44px;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .mobile-player-open .now-playing-title > span {
+    display: none;
+  }
+
+  .mobile-player-open .now-playing-title strong {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mobile-player-open .fullscreen-button {
+    display: none;
+  }
+
+  .mobile-player-close {
+    position: absolute;
+    left: 18px;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    font-size: 25px;
+  }
+
+  .mobile-player-open .now-playing-cover {
+    width: min(100%, 440px);
+    max-height: min(48dvh, 440px);
+    aspect-ratio: 1;
+    margin: 0 auto 28px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 22px 45px rgba(0, 0, 0, 0.3);
+  }
+
+  .mobile-player-open .now-playing-info {
+    width: min(100%, 440px);
+    margin: 0 auto;
+  }
+
+  .mobile-player-open .now-playing-info h2 {
+    margin: 0 0 5px;
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  .mobile-player-open .now-playing-info p {
+    font-size: 15px;
+  }
+
+  .mobile-player-open .panel-progress,
+  .mobile-player-open .large-controls {
+    width: min(100%, 440px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .mobile-player-open .panel-progress {
+    margin-top: 26px;
+  }
+
+  .mobile-player-open .large-controls {
+    justify-content: space-between;
+    margin-top: 22px;
+  }
+
+  .mobile-player-open .large-controls button {
+    width: 44px;
+    height: 44px;
+    font-size: 20px;
+  }
+
+  .mobile-player-open .large-controls button {
+    font-size: 0;
+  }
+
+  .mobile-player-open .large-controls button::after {
+    font-size: 20px;
+  }
+
+  .mobile-player-open .large-controls button:nth-child(1)::after { content: "⇄"; }
+  .mobile-player-open .large-controls button:nth-child(2)::after { content: "◀"; }
+  .mobile-player-open .large-controls button:nth-child(3)::after { content: "▶"; }
+  .mobile-player-open .large-controls button:nth-child(4)::after { content: "▶"; }
+  .mobile-player-open .large-controls button:nth-child(5)::after { content: "↻"; }
+  .mobile-player-open .large-controls .big-play.is-playing::after,
+  .bottom-controls .bottom-play.is-playing::after { content: "Ⅱ"; }
+
+  .mobile-player-open .large-controls .big-play {
+    width: 64px;
+    height: 64px;
+    font-size: 25px;
+  }
+
+  .mobile-player-open .queue-divider,
+  .mobile-player-open .queue-heading,
+  .mobile-player-open .queue-list {
+    display: none;
+  }
+
+  /* The old source contains garbled text icons. Render predictable controls on phones. */
+  .bottom-controls button,
+  .mobile-nav button {
+    font-size: 0;
+  }
+
+  .bottom-controls button::after,
+  .mobile-nav button::before {
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  .bottom-controls button:nth-child(1)::after { content: "⇄"; }
+  .bottom-controls button:nth-child(2)::after { content: "◀"; }
+  .bottom-controls button:nth-child(3)::after { content: "▶"; }
+  .bottom-controls button:nth-child(4)::after { content: "▶"; }
+  .bottom-controls button:nth-child(5)::after { content: "↻"; }
+  .mobile-nav button:nth-child(1)::before { content: "⌂"; }
+  .mobile-nav button:nth-child(2)::before { content: "⌕"; }
+  .mobile-nav button:nth-child(3)::before { content: "▣"; }
+  .mobile-nav button span { font-size: 10px; }
+}
+
+@media (max-width: 520px) {
+  .bottom-player {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .bottom-song img {
+    width: 48px;
+    height: 48px;
+  }
+
+  .bottom-center {
+    min-width: 142px;
+  }
+
+  .bottom-progress,
+  .bottom-controls button:first-child,
+  .bottom-controls button:last-child {
+    display: none;
+  }
+
+  .bottom-controls {
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .now-playing-panel.mobile-player-open {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+}
+
 .bottom-player {
   background: var(--burgundy);
 }
