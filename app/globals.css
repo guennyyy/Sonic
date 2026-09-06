@@ -1990,6 +1990,20 @@ body {
 
   .card-play { display: grid !important; place-items: center !important; font-size: 0 !important; }
   .card-play::after { display: block; width: 0; height: 0; content: ""; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid currentColor; }
+
+  /* One visual center for every transport icon. */
+  .mobile-player-open .large-controls button,
+  .bottom-controls button,
+  .phone-controls button { display: grid !important; place-items: center !important; width: 40px !important; height: 40px !important; min-width: 40px !important; min-height: 40px !important; padding: 0 !important; }
+  .mobile-player-open .large-controls .big-play,
+  .bottom-controls .bottom-play,
+  .phone-controls .phone-play { width: 62px !important; height: 62px !important; min-width: 62px !important; min-height: 62px !important; }
+  .mobile-player-open .large-controls button::before,
+  .bottom-controls button::before,
+  .phone-controls button::before { display: none !important; }
+  .mobile-player-open .large-controls button::after,
+  .bottom-controls button::after,
+  .phone-controls button::after { margin: 0 !important; }
 }
 
 /* Phone-sized Now Playing view: opened from the compact bottom player. */
