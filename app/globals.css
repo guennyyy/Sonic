@@ -1918,6 +1918,45 @@ body {
   }
 }
 
+/* Single-source responsive layout. This final layer replaces the earlier
+   experimental phone overrides without affecting the desktop application. */
+@media (min-width: 981px) {
+  .mobile-nav,
+  .mobile-player-close { display: none !important; }
+  .now-playing-panel { display: block !important; }
+}
+
+@media (max-width: 980px) {
+  .music-app { display: block !important; min-height: 100dvh; padding: 0 0 calc(154px + env(safe-area-inset-bottom)) !important; }
+  .glass-sidebar { display: none !important; }
+  .main-area { width: 100%; }
+  .page-content { padding: 0 16px 28px !important; }
+  .topbar { height: 64px !important; padding: 0 16px !important; }
+  .hero-banner { height: auto !important; min-height: 275px !important; padding: 20px 16px !important; gap: 18px !important; }
+  .hero-phone { width: min(34vw, 130px) !important; flex: 0 0 min(34vw, 130px) !important; }
+  .hero-copy { max-width: 210px !important; padding: 0 !important; }
+  .hero-copy h1 { font-size: clamp(24px, 7vw, 34px) !important; }
+  .playlist-cards { display: flex !important; gap: 12px !important; overflow-x: auto !important; }
+  .playlist-card { display: block !important; flex: 0 0 170px !important; }
+
+  .bottom-player { position: fixed !important; z-index: 80 !important; right: 0 !important; bottom: calc(60px + env(safe-area-inset-bottom)) !important; left: 0 !important; grid-template-columns: minmax(0, 1fr) auto !important; min-height: 88px !important; padding: 10px 16px !important; background: #4a1528 !important; }
+  .bottom-volume,.bottom-progress,.bottom-controls button:first-child,.bottom-controls button:last-child { display: none !important; }
+  .bottom-controls { gap: 12px !important; }
+  .bottom-song img { width: 50px !important; height: 50px !important; }
+
+  .mobile-nav { position: fixed !important; z-index: 90 !important; right: 0 !important; bottom: 0 !important; left: 0 !important; display: flex !important; min-height: calc(60px + env(safe-area-inset-bottom)) !important; justify-content: space-around !important; padding: 8px 12px calc(8px + env(safe-area-inset-bottom)) !important; border-top: 1px solid rgba(232,224,216,.16) !important; background: #3b1021 !important; }
+  .mobile-nav button { display: flex !important; flex: 1 !important; flex-direction: column !important; align-items: center !important; gap: 4px !important; color: #e8e0d8 !important; }
+  .mobile-nav button::before { display: none !important; }
+  .mobile-nav button span { font-size: 11px !important; }
+
+  .now-playing-panel { display: none !important; }
+  .now-playing-panel.mobile-player-open { position: fixed !important; z-index: 200 !important; inset: 0 !important; display: flex !important; width: 100% !important; height: 100dvh !important; flex-direction: column !important; padding: max(18px, env(safe-area-inset-top)) 22px max(22px, env(safe-area-inset-bottom)) !important; border: 0 !important; background: linear-gradient(155deg,#64253c,#210913 72%) !important; }
+  .mobile-player-open .now-playing-cover { width: min(100%, 430px) !important; max-height: 46dvh !important; aspect-ratio: 1 !important; margin: 16px auto 24px !important; object-fit: cover !important; }
+  .mobile-player-open .now-playing-info,.mobile-player-open .panel-progress,.mobile-player-open .large-controls { width: min(100%,430px) !important; margin-right: auto !important; margin-left: auto !important; }
+  .mobile-player-open .queue-divider,.mobile-player-open .queue-heading,.mobile-player-open .queue-list,.mobile-player-open .fullscreen-button { display: none !important; }
+  .mobile-player-close { position: absolute !important; left: 18px !important; display: grid !important; place-items: center !important; width: 42px !important; height: 42px !important; border: 0 !important; border-radius: 50% !important; background: rgba(255,255,255,.12) !important; color: #fff !important; }
+}
+
 /* Phone-sized Now Playing view: opened from the compact bottom player. */
 .mobile-player-close {
   display: none;
