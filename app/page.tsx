@@ -286,7 +286,7 @@ const playlists: Playlist[] = [
   },
   {
     id: "parining",
-    name: "parining gusto, confess ayaw?",
+    name: "parinig gusto, confess ayaw?",
     songIds: ["balisong", "ikot", "aya", "di-nakakasawa", "tibok"],
   },
   {
@@ -353,6 +353,8 @@ export default function Home() {
   const [repeat, setRepeat] = useState(false);
   const [liked, setLiked] = useState<string[]>([]);
   const [recentlyPlayedIds, setRecentlyPlayedIds] = useState<string[]>([]);
+  const [showAllPlaylists, setShowAllPlaylists] = useState(false);
+  const [showAllRecent, setShowAllRecent] = useState(false);
   const [activeTab, setActiveTab] = useState("Home");
 
   const currentSong =
@@ -762,10 +764,12 @@ export default function Home() {
           {!activePlaylist && <section className="content-section">
             <div className="section-title">
               <h2>{activePlaylist ? "Playlist songs" : "Made for you"}</h2>
-              <button>Show all ›</button>
+              <button onClick={() => setShowAllPlaylists(!showAllPlaylists)}>
+                {showAllPlaylists ? "Show less" : "Show all ›"}
+              </button>
             </div>
 
-            <div className="playlist-cards">
+            <div className={showAllPlaylists ? "playlist-cards show-all" : "playlist-cards"}>
               {(activePlaylist ? [activePlaylist] : playlists).map((playlist) => {
                 const firstSong = songs.find(
                   (song) => song.id === playlist.songIds[0],
@@ -823,11 +827,13 @@ export default function Home() {
             <section className="content-section">
               <div className="section-title">
                 <h2>Recently played</h2>
-                <button>Show all ›</button>
+                <button onClick={() => setShowAllRecent(!showAllRecent)}>
+                  {showAllRecent ? "Show less" : "Show all ›"}
+                </button>
               </div>
 
               <div className="recent-grid">
-                {recentlyPlayedSongs.slice(0, 4).map((song) => {
+                {recentlyPlayedSongs.slice(0, showAllRecent ? recentlyPlayedSongs.length : 4).map((song) => {
                   return (
                     <button
                       className="recent-card"
