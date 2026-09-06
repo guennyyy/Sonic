@@ -1982,6 +1982,14 @@ body {
   .green-button span::after { width:0;height:0;border-top:8px solid transparent;border-bottom:8px solid transparent;border-left:12px solid currentColor; }
   .phone-play::after,.big-play::after,.bottom-play::after { width:0;height:0;border-top:10px solid transparent;border-bottom:10px solid transparent;border-left:15px solid currentColor; }
   .phone-play.is-playing::after,.big-play.is-playing::after,.bottom-play.is-playing::after { width:5px;height:21px;border:0;background:currentColor;box-shadow:10px 0 0 currentColor; }
+
+  /* Keep the phone transport row focused and remove the broken line icons. */
+  .mobile-player-open .large-controls button:first-child,
+  .mobile-player-open .large-controls button:last-child { display: none !important; }
+  .mobile-player-open .large-controls { justify-content: center !important; gap: 34px !important; }
+
+  .card-play { display: grid !important; place-items: center !important; font-size: 0 !important; }
+  .card-play::after { display: block; width: 0; height: 0; content: ""; border-top: 8px solid transparent; border-bottom: 8px solid transparent; border-left: 12px solid currentColor; }
 }
 
 /* Phone-sized Now Playing view: opened from the compact bottom player. */
