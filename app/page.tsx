@@ -715,7 +715,7 @@ export default function Home() {
                 </div>
                 <div className="phone-controls">
                   <button onClick={previousSong} aria-label="Previous song">◀</button>
-                  <button className="phone-play" onClick={togglePlay} aria-label="Play or pause">
+                  <button className={isPlaying ? "phone-play is-playing" : "phone-play"} onClick={togglePlay} aria-label="Play or pause">
                     {isPlaying ? "Ⅱ" : "▶"}
                   </button>
                   <button onClick={nextSong} aria-label="Next song">▶</button>
